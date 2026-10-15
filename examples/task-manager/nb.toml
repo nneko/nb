@@ -1,0 +1,7 @@
+[package]
+name = "task-manager"
+version = "0.1.0"
+description = "A sample task manager written in nb"
+
+[build]
+entry = "source/main.nbs"

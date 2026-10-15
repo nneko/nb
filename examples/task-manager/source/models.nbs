@@ -1,0 +1,89 @@
+module Models
+
+  public enum Status
+
+    case pending
+    case active
+    case completed
+
+    public computed label: string do
+
+      match self
+        case .pending then "Pending"
+        case .active then "Active"
+        case .completed then "Completed"
+      end
+
+    end
+
+  end
+
+  public protocol Identifiable
+
+    def identifier -> string
+
+  end
+
+  public struct Position
+
+    public let x: float
+    public let y: float
+
+    public computed distance: float do
+      (x * x + y * y).sqrt()
+    end
+
+  end
+
+  public class Task < Identifiable
+
+    private let id: string
+
+    private var title_value: string
+    private var status_value: Status = .pending
+
+    def initial(
+      @id,
+      title: string,
+      status: Status = .pending
+    ) state
+      self.title_value = title
+      self.status_value = status
+
+    end
+
+    public def identifier -> string do
+      id
+    end
+
+    public computed title: string do
+
+      get do
+        title_value
+      end
+
+      protected set(value: string) do
+        title_value = value
+      end
+
+    end
+
+    public computed status: Status do
+      status_value
+    end
+
+    public computed completed?: boolean do
+      status_value == .completed
+    end
+
+    public def complete! do
+      status_value = .completed
+    end
+
+    public def describe -> string do
+      "\(title) [\(status.label)]"
+    end
+
+  end
+
+end

@@ -1,0 +1,56 @@
+import Models from "./models.nbs"
+import Services from "./services.nbs"
+
+module Application
+
+  private def print_tasks(
+    tasks: sequence<Models::Task>
+  ) do
+
+    for task in tasks
+      print(task.describe())
+    end
+
+  end
+
+  public async def main do
+
+    print("Welcome to nb!")
+
+    let service = Services::TaskService.new()
+
+    try
+
+      let first = service.add(
+        id: "task-001",
+        title: "Design the nb language"
+      )
+
+      let second = service.add(
+        id: "task-002",
+        title: "Implement the compiler"
+      )
+
+      service.complete!(first.identifier)
+
+      print(
+        "Total tasks: \(service.count)"
+      )
+
+      print_tasks(service.all())
+
+    handle error: Services::TaskError
+
+      print(
+        "Task operation failed: \(error)"
+      )
+
+    ensure
+
+      print("Application finished.")
+
+    end
+
+  end
+
+end

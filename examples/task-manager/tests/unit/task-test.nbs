@@ -1,0 +1,20 @@
+import Models from "../../source/models.nbs"
+
+module TaskTests
+
+  public def test_task_completion do
+
+    let task = Models::Task.new(
+      id: "task-001",
+      title: "Test task"
+    )
+
+    assert(task.completed? == false)
+
+    task.complete!
+
+    assert(task.completed? == true)
+
+  end
+
+end
